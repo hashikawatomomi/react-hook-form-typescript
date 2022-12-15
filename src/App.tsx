@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './style.css';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-function App() {
+type FormInput = {
+  name: string;
+  age: number;
+};
+
+export default function App() {
+
+  const { register, handleSubmit } = useForm<FormInput>();
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>
+        名前
+        <input {...register('name', { required: true })} />
+      </label>
+      <label>
+        年齢
+        <input type='number' {...register('age', { required: true })} />歳
+      </label>
+      <button>送信する</button>
+    </form>
   );
 }
 
-export default App;
